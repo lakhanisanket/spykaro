@@ -8,6 +8,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
@@ -145,5 +146,59 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+
+
+    // Api Controller function
+    public function sendOtp(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|min:10'
+        ]);
+
+        //if phone contains +91 then remove it
+        $phone = $request->phone;
+        $otp = rand(1111, 9999);
+
+        $user = User::updateOrCreate([
+            'phone' => $phone
+        ],[
+            'otp' => $otp,
+        ]);
+
+        return response()->json([
+           'success' => true,
+           'phone' => $phone,
+           'otp' => $user->otp,
+        ]);
+    }
+    public function login(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required',
+            'otp' => 'required'
+        ]);
+
+        $user = User::where("phone", $request->phone)->where("otp", $request->otp)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'otp' => [
+                        'Invalid credentials'
+                    ],
+                ]
+            ], 422);
+        }
+
+        $authToken = $user->createToken('auth-token')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+            'access_token' => $authToken,
+        ]);
     }
 }

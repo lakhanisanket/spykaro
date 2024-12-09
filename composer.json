@@ -7,11 +7,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-intl": "*",
         "bezhansalleh/filament-shield": "^3.3",
         "filament/filament": "^3.2",
+        "filament/spatie-laravel-media-library-plugin": "^3.2",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^11.31",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "spatie/laravel-medialibrary": "^11.10",
         "stechstudio/filament-impersonate": "^3.15",
         "stephenjude/filament-blog": "^3.0",
         "tomatophp/filament-users": "^2.0"
