@@ -8,16 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Device extends Model
+class AccessControl extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public $table = 'devices';
-
-    public const STATUS_SELECT = [
-        '1' => 'True',
-        '0' => 'False',
-    ];
+    public $table = 'access_controls';
 
     protected $dates = [
         'created_at',
@@ -25,27 +20,35 @@ class Device extends Model
         'deleted_at',
     ];
 
+    public const STATUS_SELECT = [
+        'enabled'  => 'Enabled',
+        'disabled' => 'Disabled',
+    ];
+
     protected $fillable = [
+        'name',
+        'type',
+        'status',
         'user_id',
         'device_id',
-        'unique_number',
-        'status',
     ];
 
     public $orderable = [
         'id',
-        'user.name',
-        'device_id',
-        'unique_number',
+        'name',
+        'type',
         'status',
+        'user.name',
+        'device.device',
     ];
 
     public $filterable = [
         'id',
-        'user.name',
-        'device_id',
-        'unique_number',
+        'name',
+        'type',
         'status',
+        'user.name',
+        'device.device',
     ];
 
     protected function serializeDate(DateTimeInterface $date)
@@ -53,14 +56,19 @@ class Device extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    public function getStatusLabelAttribute($value)
+    {
+        return static::STATUS_SELECT[$this->status] ?? null;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function getStatusLabelAttribute($value)
+    public function device()
     {
-        return static::STATUS_SELECT[$this->status] ?? null;
+        return $this->belongsTo(Device::class);
     }
 
     public function getCreatedAtAttribute($value)

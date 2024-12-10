@@ -10,34 +10,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Tracking extends Model implements HasMedia
+class UserOption extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes, InteractsWithMedia;
 
-    public $table = 'tracking';
+    public $table = 'user_options';
 
     protected $appends = [
         'file',
     ];
 
     protected $fillable = [
+        'key',
+        'value',
+        'data',
         'user_id',
-        'type',
-        'data',
-    ];
-
-    public $orderable = [
-        'id',
-        'user.name',
-        'type',
-        'data',
-    ];
-
-    public $filterable = [
-        'id',
-        'user.name',
-        'type',
-        'data',
     ];
 
     protected $dates = [
@@ -46,10 +33,20 @@ class Tracking extends Model implements HasMedia
         'deleted_at',
     ];
 
-    public const TYPE_SELECT = [
-        'voice'    => 'Voice',
-        'camera'   => 'Camera',
-        'location' => 'Location',
+    public $orderable = [
+        'id',
+        'key',
+        'value',
+        'data',
+        'user.name',
+    ];
+
+    public $filterable = [
+        'id',
+        'key',
+        'value',
+        'data',
+        'user.name',
     ];
 
     protected function serializeDate(DateTimeInterface $date)
@@ -57,19 +54,9 @@ class Tracking extends Model implements HasMedia
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function getTypeLabelAttribute($value)
-    {
-        return static::TYPE_SELECT[$this->type] ?? null;
-    }
-
     public function getFileAttribute()
     {
-        return $this->getMedia('tracking_file')->map(function ($item) {
+        return $this->getMedia('user_option_file')->map(function ($item) {
             $media        = $item->toArray();
             $media['url'] = $item->getUrl();
 
@@ -77,27 +64,9 @@ class Tracking extends Model implements HasMedia
         });
     }
 
-    public static $withoutAppends = false;
-
-    public function scopeWithoutAppends($query)
+    public function user()
     {
-        self::$withoutAppends = true;
-
-        return $query;
-    }
-
-    protected function getArrayableAppends()
-    {
-        if (self::$withoutAppends){
-            return [];
-        }
-
-        return parent::getArrayableAppends();
-    }
-
-    public function file()
-    {
-        return $this->hasMany(\App\Models\Media::class, 'model_id', 'id');
+        return $this->belongsTo(User::class);
     }
 
     public function getCreatedAtAttribute($value)

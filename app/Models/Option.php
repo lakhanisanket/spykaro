@@ -8,15 +8,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Device extends Model
+class Option extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public $table = 'devices';
+    public $table = 'options';
 
     public const STATUS_SELECT = [
         '1' => 'True',
-        '0' => 'False',
+        '0' => 'false',
+    ];
+
+    protected $fillable = [
+        'key',
+        'value',
+        'data',
+        'status',
     ];
 
     protected $dates = [
@@ -25,37 +32,25 @@ class Device extends Model
         'deleted_at',
     ];
 
-    protected $fillable = [
-        'user_id',
-        'device_id',
-        'unique_number',
-        'status',
-    ];
-
     public $orderable = [
         'id',
-        'user.name',
-        'device_id',
-        'unique_number',
+        'key',
+        'value',
+        'data',
         'status',
     ];
 
     public $filterable = [
         'id',
-        'user.name',
-        'device_id',
-        'unique_number',
+        'key',
+        'value',
+        'data',
         'status',
     ];
 
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 
     public function getStatusLabelAttribute($value)
