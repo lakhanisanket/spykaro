@@ -41,12 +41,29 @@ class ListDevices extends ListRecords
                 ToggleColumn::make('status'),
             ])
             ->filters([
-                Filter::make('user')
-                    ->form([
-                        TextInput::make('search')
-                            ->placeholder('Search name, email, or phone')
-                            ->label('Search User'),
-                    ])
+//                Filter::make('user')
+//                    ->form([
+//                        TextInput::make('search')
+//                            ->placeholder('Search name, email, or phone')
+//                            ->label('Search User'),
+//                    ])
+//                    ->query(function ($query, $data) {
+//                        if ($search = $data['search'] ?? null) {
+//                            $query->whereHas('user', function ($userQuery) use ($search) {
+//                                $userQuery->where('name', 'like', "%{$search}%")
+//                                    ->orWhere('email', 'like', "%{$search}%")
+//                                    ->orWhere('phone', 'like', "%{$search}%");
+//                            });
+//                        }
+//                    }),
+                SelectFilter::make('user')
+                    ->searchable() // Enables the search input in the dropdown
+                    ->options(function () {
+                        // Fetch users and prepare options for dropdown
+                        return User::all()->mapWithKeys(function ($user) {
+                            return [$user->id => "{$user->name} ({$user->email}, {$user->phone})"];
+                        });
+                    })
                     ->query(function ($query, $data) {
                         if ($search = $data['search'] ?? null) {
                             $query->whereHas('user', function ($userQuery) use ($search) {

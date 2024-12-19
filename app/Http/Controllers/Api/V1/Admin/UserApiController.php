@@ -14,19 +14,20 @@ class UserApiController extends Controller
             'phone' => 'required|min:10'
         ]);
 
-        //if phone contains +91 then remove it
-        $phone = $request->phone;
         $otp = rand(1111, 9999);
 
         $user = User::updateOrCreate([
-            'phone' => $phone
+            'phone' => $request->phone
         ],[
+            'name' => '',
+            'email' => '',
             'otp' => $otp,
+            'password' => ''
         ]);
 
         return response()->json([
             'success' => true,
-            'phone' => $phone,
+            'phone' => $request->phone,
             'otp' => $user->otp,
         ]);
     }
