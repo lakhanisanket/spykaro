@@ -18,7 +18,7 @@ class UserApiController extends Controller
 
         $user = User::updateOrCreate([
             'phone' => $request->phone
-        ],[
+        ], [
             'name' => '',
             'email' => '',
             'otp' => $otp,
@@ -71,6 +71,32 @@ class UserApiController extends Controller
         return response()->json([
             'success' => true,
             'user' => $user,
+        ]);
+    }
+
+    public function profileUpdate(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'phone' => 'required',
+            'gender' => 'nullable',
+            'dob' => 'nullable|date',
+        ]);
+
+        User::updateOrCreate([
+            'id' => auth()->id(),
+            'phone' => $request->phone,
+        ], [
+            'name' => $request->name,
+            'email' => $request->email ?? null,
+            'gender' => $request->gender ?? "",
+            'dob' => date('Y-m-d', strtotime($request->dob)) ?? null,
+            'password' => bcrypt('password'), // Add this only if creation is possible
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User updated successfully.',
         ]);
     }
 }

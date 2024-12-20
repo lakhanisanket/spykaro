@@ -20,6 +20,9 @@ Route::group(['prefix' => 'v1', 'as' => 'api.'], function () {
 
 Route::group(['prefix' => 'v1', 'as' => 'api.', 'middleware' => ['auth:sanctum']], function () {
 
+    // Profile update
+    Route::post('profileUpdate', [UserApiController::class, 'profileUpdate']);
+
     // Tracking
     Route::post('getTracking', [TrackingApiController::class, 'getTracking']);
     Route::post('addTracking', [TrackingApiController::class, 'addTracking']);
