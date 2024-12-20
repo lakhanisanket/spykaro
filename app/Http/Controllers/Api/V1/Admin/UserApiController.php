@@ -19,8 +19,6 @@ class UserApiController extends Controller
         $user = User::updateOrCreate([
             'phone' => $request->phone
         ], [
-            'name' => '',
-            'email' => '',
             'otp' => $otp,
             'password' => ''
         ]);
