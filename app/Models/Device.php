@@ -30,6 +30,7 @@ class Device extends Model
         'device_id',
         'unique_number',
         'status',
+        'data',
     ];
 
     public $orderable = [

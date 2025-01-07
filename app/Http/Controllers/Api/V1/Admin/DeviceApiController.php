@@ -11,12 +11,11 @@ class DeviceApiController extends Controller
     public function getDevice(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'limit' => '',
         ]);
 
-        $device = Device::where('id', $request->id)
-            ->where('user_id', auth()->id())
-            ->first();
+        $device = Device::where('user_id', auth()->id())
+            ->paginate($request->limit);
 
         return response()->json([
             'success' => true,
@@ -36,6 +35,7 @@ class DeviceApiController extends Controller
             'device_id' => $request->device_id ?? "",
             'unique_number' => $request->unique_number ?? "",
             'status' => $request->status ?? 1,
+            'data' => $request->data
         ]);
 
         return response()->json([
@@ -60,6 +60,7 @@ class DeviceApiController extends Controller
             'device_id' => $request->device_id ?? "",
             'unique_number' => $request->unique_number ?? "",
             'status' => $request->status ?? 1,
+            'data' => $request->data
         ]);
 
         return response()->json([
