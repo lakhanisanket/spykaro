@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\Admin\AccessControlApiController;
 use App\Http\Controllers\Api\V1\Admin\DeviceApiController;
+use App\Http\Controllers\Api\V1\Admin\FeedbackApiController;
 use App\Http\Controllers\Api\V1\Admin\TrackingApiController;
 use App\Http\Controllers\Api\V1\Admin\UserApiController;
 use App\Http\Controllers\Api\V1\Admin\UserOptionApiController;
@@ -45,5 +46,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'middleware' => ['auth:sanctum']
     Route::post('addAccessControl', [AccessControlApiController::class, 'addAccessControl']);
     Route::post('editAccessControl', [AccessControlApiController::class, 'editAccessControl']);
     Route::post('deleteAccessControl', [AccessControlApiController::class, 'deleteAccessControl']);
+
+    // Feedback
+    Route::post('addFeedback', [FeedbackApiController::class, 'addFeedback']);
 
 });

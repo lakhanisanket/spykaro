@@ -15,6 +15,7 @@ class DeviceApiController extends Controller
         ]);
 
         $device = Device::where('user_id', auth()->id())
+            ->orderBy('id', 'desc')
             ->paginate($request->limit);
 
         return response()->json([

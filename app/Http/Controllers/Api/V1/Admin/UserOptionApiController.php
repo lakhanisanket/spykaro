@@ -11,16 +11,16 @@ class UserOptionApiController extends Controller
     public function getOptions(Request $request)
     {
         $request->validate([
-            'key' => '',
+            'key' => 'required',
         ]);
 
-        $options = UserOption::where('user_id', auth()->id())
+        $option = UserOption::where('user_id', auth()->id())
             ->where('key', $request->key)
-            ->get();
+            ->first();
 
         return response()->json([
             'success' => true,
-            'user-options' => $options,
+            'option' => $option,
         ]);
     }
 
