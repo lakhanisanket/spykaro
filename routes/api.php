@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\Admin\AccessControlApiController;
 use App\Http\Controllers\Api\V1\Admin\DeviceApiController;
 use App\Http\Controllers\Api\V1\Admin\FeedbackApiController;
+use App\Http\Controllers\Api\V1\Admin\OptionApiController;
 use App\Http\Controllers\Api\V1\Admin\TrackingApiController;
 use App\Http\Controllers\Api\V1\Admin\UserApiController;
 use App\Http\Controllers\Api\V1\Admin\UserOptionApiController;
@@ -26,6 +27,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'middleware' => ['auth:sanctum']
 
     // Tracking
     Route::post('getTracking', [TrackingApiController::class, 'getTracking']);
+    Route::post('getTypeTracking', [TrackingApiController::class, 'getTypeTracking']);
     Route::post('addTracking', [TrackingApiController::class, 'addTracking']);
     Route::post('updateTracking', [TrackingApiController::class, 'updateTracking']);
     Route::post('deleteTracking', [TrackingApiController::class, 'deleteTracking']);
@@ -37,9 +39,14 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'middleware' => ['auth:sanctum']
     Route::post('deleteDevice', [DeviceApiController::class, 'deleteDevice']);
 
     // User-Options
-    Route::post('getOptions', [UserOptionApiController::class, 'getOptions']);
-    Route::post('addEditOption', [UserOptionApiController::class, 'addEditOption']);
-    Route::post('deleteOption', [UserOptionApiController::class, 'deleteOption']);
+    Route::post('getUserOptions', [UserOptionApiController::class, 'getUserOptions']);
+    Route::post('addEditUserOption', [UserOptionApiController::class, 'addEditUserOption']);
+    Route::post('deleteUserOption', [UserOptionApiController::class, 'deleteUserOption']);
+
+    // Options
+    Route::post('getOption', [OptionApiController::class, 'getOption']);
+    Route::post('addEditOption', [OptionApiController::class, 'addEditOption']);
+    Route::post('deleteOption', [OptionApiController::class, 'deleteOption']);
 
     // Access Control
     Route::post('getAccessControl', [AccessControlApiController::class, 'getAccessControl']);

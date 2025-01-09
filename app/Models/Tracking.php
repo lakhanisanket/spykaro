@@ -24,6 +24,7 @@ class Tracking extends Model implements HasMedia
         'user_id',
         'type',
         'data',
+        'device_id',
     ];
 
     public $orderable = [
@@ -31,6 +32,7 @@ class Tracking extends Model implements HasMedia
         'user.name',
         'type',
         'data',
+        'device.name',
     ];
 
     public $filterable = [
@@ -38,6 +40,7 @@ class Tracking extends Model implements HasMedia
         'user.name',
         'type',
         'data',
+        'device.name',
     ];
 
     protected $dates = [
@@ -60,6 +63,11 @@ class Tracking extends Model implements HasMedia
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function device()
+    {
+        return $this->belongsTo(Device::class);
     }
 
     public function getTypeLabelAttribute($value)

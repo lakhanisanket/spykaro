@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class UserOptionApiController extends Controller
 {
-    public function getOptions(Request $request)
+    public function getUserOptions(Request $request)
     {
         $request->validate([
             'key' => 'required',
@@ -24,12 +24,12 @@ class UserOptionApiController extends Controller
         ]);
     }
 
-    public function addEditOption(Request $request)
+    public function addEditUserOption(Request $request)
     {
         $request->validate([
             'key' => 'required',
-            'value' => 'required',
-            'data' => 'required',
+            'value' => '',
+            'data' => '',
         ]);
 
         $userOption = UserOption::updateOrCreate([
@@ -55,7 +55,7 @@ class UserOptionApiController extends Controller
         ]);
     }
 
-    public function deleteOption(Request $request)
+    public function deleteUserOption(Request $request)
     {
         $request->validate([
             'id' => 'required',

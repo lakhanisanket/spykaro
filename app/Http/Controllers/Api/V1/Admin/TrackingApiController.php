@@ -19,12 +19,26 @@ class TrackingApiController extends Controller
 
         $tracking = Tracking::where('id', $request->id)
             ->where('user_id', auth()->id())
-//            ->withoutAppends()
-//            ->with(["file" => function($q){
-//                $q->where("collection_name", "tracking_file")
-//                    ->where("model_type", "App\Models\Tracking");
-//            }])
-            ->first();
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'tracking' => $tracking ?? 'ID Not Match..',
+        ]);
+    }
+
+    public function getTypeTracking(Request $request)
+    {
+        $request->validate([
+            'device_id' => 'required',
+            'type' => 'required',
+            'limit' => '',
+        ]);
+
+        $tracking = Tracking::where('device_id', $request->device_id)
+            ->where('type', $request->type)
+            ->where('user_id', auth()->id())
+            ->paginate($request->limit ?? 10);
 
         return response()->json([
             'success' => true,
