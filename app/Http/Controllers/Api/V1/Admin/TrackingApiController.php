@@ -49,12 +49,14 @@ class TrackingApiController extends Controller
     public function addTracking(Request $request)
     {
         $request->validate([
+            'device_id' => 'required',
             'type' => '',
             'data' => '',
         ]);
 
         $tracking = Tracking::create([
             'user_id' => auth()->id(),
+            'device_id' => $request->device_id,
             'type' => $request->type,
             'data' => $request->data,
         ]);
@@ -87,6 +89,7 @@ class TrackingApiController extends Controller
             'id' => $request->id,
             'user_id' => auth()->id(),
         ],[
+            'device_id' => $request->device_id,
             'type' => $request->type ?? "",
             'data' => $request->data ?? "",
         ]);
